@@ -1,0 +1,40 @@
+# Dockerfile para arquitecturas ARM64 (Raspberry Pi, Jetson Orin Nano, Qualcomm)
+# Utiliza una imagen base de ROS 2 para el stack robótico
+
+ARG ROS_DISTRO=humble
+FROM ros:$ROS_DISTRO-ros-base-jammy-arm64
+
+LABEL maintainer="Manus AI for Amalia Gamma Project"
+LABEL description="Contenedor base para el software del robot Amalia Gamma en dispositivos edge ARM64."
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    git \
+    nano \
+    # Dependencias específicas de ROS 2
+    ros-$ROS_DISTRO-ros-base \
+    # Dependencias para el LLM cuantizado (ej. ONNX Runtime, TFLite)
+    # Se asume que se instalarán más tarde o se montarán desde el host
+    && rm -rf /var/lib/apt/lists/*
+
+# Configurar el entorno de ROS 2
+ENV ROS_DISTRO=$ROS_DISTRO
+ENV ROS_DOMAIN_ID=42 # ID de dominio para Amalia Gamma
+
+# Crear un directorio de trabajo
+WORKDIR /app
+
+# Copiar el código del proyecto
+COPY ../software /app/software
+
+# Instalar dependencias de Python
+COPY requirements.txt /app/
+RUN pip3 install --no-cache-dir -r /app/requirements.txt
+
+# Comando de inicio: Iniciar el nodo principal del robot
+# Se asume que el nodo principal se encuentra en software/robot_main.py
+CMD ["/bin/bash", "-c", "source /opt/ros/$ROS_DISTRO/setup.bash && python3 /app/software/robot_main.py"]
+
+# Exponer puertos para comunicación (ej. ROS 2 DDS, LoRa Manager)
+EXPOSE 11311/tcp 868/udp

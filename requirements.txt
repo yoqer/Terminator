@@ -1,0 +1,7 @@
+# Requisitos de Python para el software del robot
+numpy
+scipy
+pyserial # Para comunicación con microcontroladores (Arduino/Qualcomm)
+python-can # Para el bus CAN (motores)
+webauthn # Para el sistema de identificación Espejin
+logging

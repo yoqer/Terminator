@@ -1,0 +1,35 @@
+# Dockerfile.edge
+# Contenedor para el software de borde (HAL, Update Manager)
+# Compatible con arquitecturas ARM64 (Jetson, RPi) y AMD64 (Mini PC)
+
+# Usar una imagen base ligera con Python y ROS 2 (simulado)
+FROM ros:humble-ros-base-jammy
+
+# Argumento para la arquitectura (se puede usar para optimizaciones específicas)
+ARG TARGETARCH
+
+# Instalar dependencias básicas
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    git \
+    --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
+
+# Configurar el entorno de trabajo
+WORKDIR /app
+
+# Copiar el código de la HAL y el Update Manager
+COPY robot_software_dev/hardware_abstraction /app/hardware_abstraction
+COPY robot_software_dev/desktop_software /app/desktop_software
+COPY robot_software_dev/cloud_software /app/cloud_software
+
+# Instalar dependencias de Python (simulado)
+# En un entorno real, se usaría un requirements.txt
+RUN pip3 install --no-cache-dir requests numpy
+
+# Comando de entrada para el contenedor
+# El Update Manager se ejecuta para verificar la versión y el HAL se inicializa
+CMD ["python3", "hardware_abstraction/update_manager.py"]
+
+# Nota: Para Jetson, se usaría una imagen base de NVIDIA (nvcr.io/nvidia/l4t-base)
+# Para Mini PC, se usaría una imagen base de Linux (ubuntu:latest)
