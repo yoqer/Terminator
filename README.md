@@ -111,6 +111,12 @@ Este proyecto es patrocinado por la **WC (WaterCax)** como una iniciativa para l
 **Licencia:** **Apache License 2.0** (Ver archivo [LICENSE](./LICENSE))
 
 
+
+
+
+https://github.com/yoqer/Terminator-T3/blob/master/kristanna-loken-i-cant-move.gif
+
+
 *Nota: Lamentable el modelo T3 completo sufrio problematica y fue reconstruido, es posible que la adaptacion al entrenamiento en la Version Gamma de Amalia, pueda contener errores, se recomienda pasarlo previamente por sistema de correcion de cuales. 
 Alternativamente puede usar la versión del T2 con la combinacion de mejora del T3 que corrompio al mismo a un sistema impredecible. http://github.com/yoqer/Termineitor
 (Es la anterior Version sin entrenamiento, *tenga cuidado.)
